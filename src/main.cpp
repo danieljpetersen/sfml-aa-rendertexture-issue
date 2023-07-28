@@ -1,19 +1,19 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-#include <sstream>
+#include <array>
 
 ////////////////////////////////////////////////////////////
 
 // change this to 1 to trigger the bug
-#define TRIGGER_THE_BUG 0
+#define TRIGGER_THE_BUG 1
 
 int main()
 {
     const float screenWidth = 800.0f;
     const float screenHeight = 600.0f;
 
-    sf::RenderWindow window(sf::VideoMode({screenWidth, screenHeight}), "Window", sf::Style::Default, sf::ContextSettings(0, 0, 4));
+    sf::RenderWindow window(sf::VideoMode({(unsigned int)screenWidth, (unsigned int)screenHeight}), "Window", sf::Style::Default, sf::ContextSettings(0, 0, 4));
 	window.setVerticalSyncEnabled(true);
 
     sf::Texture beautifulTexture;
@@ -28,8 +28,8 @@ int main()
     renderTextureAALevel = 4;
 #endif
 
-    renderTextures[0].create({screenWidth, screenHeight}, sf::ContextSettings(0, 0, renderTextureAALevel));
-    renderTextures[1].create({screenWidth, screenHeight}, sf::ContextSettings(0, 0, renderTextureAALevel));
+    (void)renderTextures[0].create({(unsigned int)screenWidth, (unsigned int)screenHeight}, sf::ContextSettings(0, 0, renderTextureAALevel));
+    (void)renderTextures[1].create({(unsigned int)screenWidth, (unsigned int)screenHeight}, sf::ContextSettings(0, 0, renderTextureAALevel));
 
     auto drawToRenderTextures =[&]() {
         renderTextures[0].clear();
@@ -51,11 +51,7 @@ int main()
         vertexArrays[0].clear();
         vertexArrays[1].clear();
 
-        float xCenter = static_cast<float>(sf::Mouse::getPosition().x);
-        if (xCenter < 0)
-            xCenter = 0;
-        if (xCenter >= screenWidth)
-            xCenter = screenWidth-1;
+        float xCenter = screenWidth / 2;
 
         vertexArrays[0].append(sf::Vertex({0,0}, {0,0}));
         vertexArrays[0].append(sf::Vertex({xCenter,0}, {xCenter,0}));

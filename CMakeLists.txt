@@ -24,17 +24,15 @@ FetchContent_MakeAvailable(SFML)
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-system sfml-window sfml-audio sfml-network)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wno-sign-compare -Wreturn-type")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wreturn-type")
     
     # no-pie because in some linux file-managers the exe will appear as a shared library without this flag
     target_link_libraries(${PROJECT_NAME} -lX11 -no-pie) 
 
     IF(CMAKE_BUILD_TYPE MATCHES Release)
         message("Release build.")
-        set(CMAKE_CXX_FLAGS "-O2 -Wreturn-type") ## Optimize + Warn about forgotten return statements
     else()
         message("Debug build.")
-        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wreturn-type")
     endif()
 else()
     set(BUILD_ARCH "-m64")
